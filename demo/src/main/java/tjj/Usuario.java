@@ -1,31 +1,34 @@
 package tjj;
 
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 
 import tjj.interfaces.emailManager;
+import tjj.interfaces.predicates;
 
-public class Usuario implements emailManager {
+public class Usuario implements emailManager, predicates {
     Contacto contacto;
-    BandejaEnviados BandejaEnviados;
-    BandejaEntrada BandejaEntrada;
+    ArrayList<Correo> BandejaEnviados= new ArrayList<Correo>();
+    ArrayList<Correo> BandejaEntrada= new ArrayList<Correo>();
+    
 
     public Usuario(Contacto contacto) {
         this.contacto = contacto;
     }
 
-    public BandejaEnviados getBandejaEnviados() {
+    public ArrayList<Correo> getBandejaEnviados() {
         return BandejaEnviados;
     }
 
-    public void setBandejaEnviados(BandejaEnviados bandejaEnviados) {
+    public void setBandejaEnviados(ArrayList<Correo> bandejaEnviados) {
         BandejaEnviados = bandejaEnviados;
     }
 
-    public BandejaEntrada getBandejaEntrada() {
+    public ArrayList<Correo> getBandejaEntrada() {
         return BandejaEntrada;
     }
 
-    public void setBandejaEntrada(BandejaEntrada bandejaEntrada) {
+    public void setBandejaEntrada(ArrayList<Correo> bandejaEntrada) {
         BandejaEntrada = bandejaEntrada;
     }
     
@@ -38,10 +41,14 @@ public class Usuario implements emailManager {
     }
     @Override
     public void enviarCorreo(Correo correo) {
-        for(Usuario c: correo.para){
-            c.BandejaEntrada.agregarCorreo(correo);
+        if(correo.para==null) {
+            correo.para1.BandejaEntrada.add(correo);
+        }else {
+            for(Usuario c: correo.para){
+                c.BandejaEntrada.add(correo);
+            }
         }
-        this.BandejaEnviados.agregarCorreo(correo);
+        this.BandejaEnviados.add(correo);
     }
 
     @Override
@@ -49,9 +56,15 @@ public class Usuario implements emailManager {
         Correo correo = new Correo(asunto, cuerpo, this.contacto, para);
         return correo;
     }
+    public Correo crearCorreo(String asunto, String cuerpo, Usuario para) {
+        Correo correo = new Correo(asunto, cuerpo, this.contacto, para);
+        return correo;
+    }
 
     public String toString() {
         return contacto.toString();
     }
+
+    
 
 }

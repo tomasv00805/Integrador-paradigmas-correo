@@ -10,7 +10,7 @@ public interface emailManager {
     public void enviarCorreo(Correo correo);
     
     public Correo crearCorreo(String asunto, String cuerpo, ArrayList<Usuario> para);
-
+    public Correo crearCorreo(String asunto, String cuerpo, Usuario para);
     
     
     
