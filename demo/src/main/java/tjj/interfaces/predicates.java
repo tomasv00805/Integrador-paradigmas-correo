@@ -38,5 +38,8 @@ public interface predicates {
         Predicate<Correo> Correogmail =  c -> c.getContacto().getCorreo().endsWith(tipoemail);
         return filtrarCorreos(Correogmail, Correos);
     }
-    
+    public static ArrayList<Correo> filtrarCorreosPorContenido(String contenido, ArrayList<Correo> Correos){
+        Predicate<Correo> Porcontenido=  c -> c.getContenido().contains(contenido);
+        return filtrarCorreos(Porcontenido, Correos);
+    }
 }
